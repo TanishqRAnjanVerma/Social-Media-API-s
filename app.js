@@ -2,7 +2,6 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import swagger from "swagger-ui-express";
-import fs from "fs";
 import apiDocs from "./swagger.json" with { type: "json" };
 import postRouter from "./src/routes/postRoutes.js";
 import commentRouter from "./src/routes/commentRoutes.js";
@@ -19,8 +18,8 @@ dotenv.config();
 const app = express();
 
 // CORS Policy Configuration
-var corsOptions = {
-  origin: "http://localhost:5500",
+const corsOptions = {
+  origin: process.env.CLIENT_URL || "*",
 };
 app.use(cors(corsOptions));
 
@@ -54,7 +53,7 @@ app.use(errorHandler);
 
 // Middleware to handle 404 requests
 app.use((req, res) => {
-  res.status(404).send("API not found. Please check our documentation for more information at localhost:3200/api-docs.");
+  res.status(404).send("API not found. Please check our documentation for more information at localhost:4000/api-docs.");
 });
 
 // Specify the port and start the server

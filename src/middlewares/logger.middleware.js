@@ -12,7 +12,7 @@ const logger = winston.createLogger({
 
 export const loggerMiddleware = async (req, res, next) => {
   // Log all requests except for user sign-in and sign-up
-  if (!req.path.includes("/sign-in") && !req.path.includes("/sign-up")) {
+  if (!req.originalUrl.startsWith("/api/users")) {
     const logData = `Method: ${req.method}, URL: ${
       req.originalUrl
     }, Body: ${JSON.stringify(req.body)}`;
