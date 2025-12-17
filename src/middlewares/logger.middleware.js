@@ -18,7 +18,7 @@ export const loggerMiddleware = async (req, res, next) => {
     }, Body: ${JSON.stringify(req.body)}`;
     logger.info(logData, { timestamp: new Date().toISOString() });
   }
-  next();
+  return next();
 };
 
 export default loggerMiddleware;
