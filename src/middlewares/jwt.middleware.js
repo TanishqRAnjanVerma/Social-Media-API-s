@@ -1,3 +1,5 @@
+import jwt from "jsonwebtoken";
+
 const jwtAuth = (req, res, next) => {
   // Read the token
   const authHeader = req.headers.authorization;

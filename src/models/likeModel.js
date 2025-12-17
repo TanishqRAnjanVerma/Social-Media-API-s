@@ -1,10 +1,11 @@
-const likes = [];
+export const likes = [];
+let likeIdCounter = 0;
 
 export default class LikeModel {
   // Add a like
   static addLike(userId, postId) {
     const newLike = {
-      id: likes.length + 1,
+      id: ++likeIdCounter,
       userId,
       postId,
     };

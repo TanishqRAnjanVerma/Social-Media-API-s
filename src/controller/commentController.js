@@ -1,52 +1,72 @@
-import CommentModel from "../models/commentModel.js";
+import CommentModel, { comments } from "../models/commentModel.js";
+import CustomError from "../utils/customError.js";
 
 export default class CommentController {
   // Add a comment
-  addComment(req, res) {
-    const { userId, postId, content } = req.body;
-
-    if (!userId || !content) {
-      return res
-        .status(400)
-        .send({ message: "userId and content are required" });
+  addComment(req, res, next) {
+    try {
+      const userId = req.userId;
+      const postId = req.params.postId;
+      const { content } = req.body;
+      const newComment = CommentModel.addComment(
+        userId,
+        Number(postId),
+        content
+      );
+      res.status(201).send(newComment);
+    } catch (error) {
+      // This will now be handled by your central errorHandler
+      next(error);
     }
-
-    const newComment = CommentModel.addComment(
-      Number(userId),
-      Number(postId),
-      content
-    );
-
-    res.status(201).send(newComment);
   }
 
-  // Get all comments
-  getAllComments(req, res) {
-    const allComments = CommentModel.getAllComments();
-    res.status(200).send(allComments);
+  // Get all comments for a specific post
+  getCommentsForPost(req, res, next) {
+    try {
+      const { page, limit } = req.query;
+      const postId = req.params.postId;
+      const comments = CommentModel.getCommentsByPostId(Number(postId), {
+        page,
+        limit,
+      });
+      res.status(200).send(comments);
+    } catch (error) {
+      next(error);
+    }
   }
 
   // Delete a comment
-  deleteComment(req, res) {
-    const { id } = req.params;
-    const { userId } = req.body;
-    const success = CommentModel.deleteComment(id, userId);
-    if (success) {
+  deleteComment(req, res, next) {
+    try {
+      const { commentId } = req.params;
+      const userId = req.userId;
+      CommentModel.deleteComment(Number(commentId), userId);
       res.status(200).send({ message: "Comment deleted successfully" });
-    } else {
-      res.status(404).send({ message: "Comment not found or unauthorized" });
+    } catch (error) {
+      next(error);
     }
   }
 
   // Update a comment
-  updateComment(req, res) {
-    const { id } = req.params;
-    const { userId, content } = req.body;
-    const updatedComment = CommentModel.updateComment(id, userId, content);
-    if (updatedComment) {
+  updateComment(req, res, next) {
+    try {
+      const { commentId } = req.params;
+      const userId = req.userId;
+      const { content } = req.body;
+
+      if (!content) {
+        throw new CustomError("Content is required", 400);
+      }
+
+      const updatedComment = CommentModel.updateComment(
+        Number(commentId),
+        userId,
+        content
+      );
+
       res.status(200).send(updatedComment);
-    } else {
-      res.status(404).send({ message: "Comment not found or unauthorized" });
+    } catch (error) {
+      next(error);
     }
   }
 }

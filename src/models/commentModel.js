@@ -1,4 +1,5 @@
-// In-memomry array to store comments
+import CustomError from "../utils/customError.js";
+// In-memory array to store comments
 const comments = [
   {
     id: 1,
@@ -10,19 +11,20 @@ const comments = [
   {
     id: 2,
     userId: 2,
-    postId: 2,
+    postId: 1,
     content: "This is another comment",
     createdAt: new Date(),
   },
   {
     id: 3,
     userId: 3,
-    postId: 3,
+    postId: 1,
     content: "This is a third comment",
     createdAt: new Date(),
   },
 ];
-let commentIdCounter = comments.length;
+let commentIdCounter =
+  comments.length > 0 ? Math.max(...comments.map((c) => c.id)) : 0;
 export default class CommentModel {
   constructor(id, userId, postId, content) {
     this.id = id;
@@ -44,17 +46,30 @@ export default class CommentModel {
     return newComment;
   }
 
-  // Get all comments
-  static getAllComments() {
-    return comments;
+  // Get comments by post ID
+  static getCommentsByPostId(postId, { page = 1, limit = 10 }) {
+    const pageNum = parseInt(page, 10) || 1;
+    const limitNum = parseInt(limit, 10) || 10;
+
+    const postComments = comments.filter((c) => c.postId === Number(postId));
+
+    // Paginate
+    const startIndex = (pageNum - 1) * limitNum;
+    const endIndex = pageNum * limitNum;
+
+    return postComments.slice(startIndex, endIndex);
   }
+
   // Delete a comment
   static deleteComment(id, userId) {
     const index = comments.findIndex(
-      (comment) => comment.id == id && comment.userId == userId
+      (comment) => comment.id === Number(id) && comment.userId === userId
     );
     if (index === -1) {
-      return false;
+      throw new CustomError(
+        "Comment not found or you are not authorized to delete it",
+        404
+      );
     }
     comments.splice(index, 1);
     return true;
@@ -63,12 +78,17 @@ export default class CommentModel {
   // Update a comment
   static updateComment(id, userId, content) {
     const comment = comments.find(
-      (comment) => comment.id == id && comment.userId == userId
+      (comment) => comment.id === Number(id) && comment.userId === userId
     );
     if (!comment) {
-      return null;
+      throw new CustomError(
+        "Comment not found or you are not authorized to update it",
+        404
+      );
     }
     comment.content = content;
     return comment;
   }
 }
+
+export { comments };

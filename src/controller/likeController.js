@@ -1,14 +1,15 @@
 import LikeModel from "../models/likeModel.js";
+import CustomError from "../utils/customError.js";
 
 export default class LikeController {
   // Toggle like (add/remove)
   toggleLike(req, res, next) {
     try {
       const userId = req.userId;
-      const postId = Number(req.params.postId);
+      const postId = Number(req.params.postId); // postId from params
 
-      if (!postId) {
-        return res.status(400).json({ message: "postId is required" });
+      if (!postId || isNaN(postId)) {
+        throw new CustomError("A valid postId is required", 400);
       }
 
       const existingLike = LikeModel.findLike(userId, postId);
@@ -30,8 +31,8 @@ export default class LikeController {
     try {
       const postId = Number(req.params.postId);
 
-      if (!postId) {
-        return res.status(400).json({ message: "postId is required" });
+      if (!postId || isNaN(postId)) {
+        throw new CustomError("A valid postId is required", 400);
       }
 
       const likes = LikeModel.getLikesByPostId(postId);

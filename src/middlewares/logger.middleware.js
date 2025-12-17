@@ -10,17 +10,13 @@ const logger = winston.createLogger({
   transports: [new winston.transports.File({ filename: "app.log" })],
 });
 
-export const loggerMiddleware = (req, res, next) => {
-  // Exclude user authentication routes
-  if (!req.originalUrl.startsWith("/api/users")) {
-    const logData = {
-      method: req.method,
-      url: req.originalUrl,
-      body: Object.keys(req.body || {}).length > 0 ? req.body : "N/A",
-    };
-
-    logger.info(logData);
-  }
+const loggerMiddleware = (req, res, next) => {
+  const logData = {
+    method: req.method,
+    url: req.originalUrl,
+    body: Object.keys(req.body || {}).length > 0 ? req.body : "N/A",
+  };
+  logger.info(logData);
   next();
 };
 

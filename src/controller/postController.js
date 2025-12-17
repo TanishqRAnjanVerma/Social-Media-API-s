@@ -5,18 +5,17 @@ export default class PostController {
   createPost(req, res, next) {
     // Use the userId from the token, not the body
     const userId = req.userId;
-    const { caption } = req.body;
+    const { caption, status } = req.body; // status is optional
 
     // Get the image path from multer's file object
     const imageUrl = req.file ? req.file.path : null;
 
-    if (!caption || !imageUrl) {
-      return res
-        .status(400)
-        .send({ message: "Caption and image are required." });
+    if (!caption) {
+      return res.status(400).send({ message: "Caption is required." });
     }
 
-    const createdPost = PostModel.createPost(userId, caption, imageUrl);
+    // Pass status to the model, which will default to 'published' if not provided
+    const createdPost = PostModel.createPost(userId, caption, imageUrl, status);
     res.status(201).send(createdPost);
   }
 
@@ -37,7 +36,7 @@ export default class PostController {
   getPostById(req, res, next) {
     try {
       const post = PostModel.getPostById(req.params.id);
-      res.send(post);
+      res.status(200).send(post);
     } catch (err) {
       next(new CustomError(err.message, 404));
     }
@@ -51,8 +50,8 @@ export default class PostController {
   // Update a post
   updatePost(req, res, next) {
     try {
-      const postId = req.params.id;
-      const userId = req.userId; // from JWT
+      const postId = Number(req.params.id);
+      const userId = req.userId;
       const { caption } = req.body;
       const imageUrl = req.file ? req.file.path : undefined;
 
@@ -64,13 +63,15 @@ export default class PostController {
       );
       res.status(200).send(updatedPost);
     } catch (err) {
-      next(new CustomError(err.message, 404));
+      // Use 401 for unauthorized, and 404 for not found
+      const statusCode = err.message.includes("Unauthorized") ? 401 : 404;
+      next(new CustomError(err.message, statusCode));
     }
   }
   // Delete a post
   deletePost(req, res, next) {
     try {
-      const postId = req.params.id;
+      const postId = Number(req.params.id);
       const userId = req.userId; // from JWT
 
       const success = PostModel.deletePost(postId, userId);
@@ -81,7 +82,39 @@ export default class PostController {
         res.status(404).send({ message: "Post not found or unauthorized" });
       }
     } catch (err) {
-      next(new CustomError(err.message, 401));
+      const statusCode = err.message.includes("unauthorized") ? 401 : 404;
+      next(new CustomError(err.message, statusCode));
+    }
+  }
+
+  // Update post status
+  updateStatus(req, res, next) {
+    try {
+      const postId = Number(req.params.id);
+      const userId = req.userId;
+      const { status } = req.body;
+
+      if (!["draft", "archived", "published"].includes(status)) {
+        return res.status(400).send({ message: "Invalid status provided." });
+      }
+
+      const updatedPost = PostModel.updateStatus(postId, userId, status);
+      res.status(200).send(updatedPost);
+    } catch (err) {
+      const statusCode = err.message.includes("Unauthorized") ? 401 : 404;
+      next(new CustomError(err.message, statusCode));
+    }
+  }
+
+  // Toggle bookmark
+  toggleBookmark(req, res, next) {
+    try {
+      const postId = Number(req.params.id);
+      const userId = req.userId;
+      const message = PostModel.toggleBookmark(postId, userId);
+      res.status(200).send({ message });
+    } catch (err) {
+      next(new CustomError(err.message, 404));
     }
   }
 }

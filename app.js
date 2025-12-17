@@ -25,9 +25,6 @@ app.use(cors(corsOptions));
 
 app.use(express.json());
 
-// Use logger middleware
-app.use(loggerMiddleware);
-
 // Use Swagger
 app.use("/api-docs", swagger.serve, swagger.setup(apiDocs));
 
@@ -40,21 +37,21 @@ app.get("/", (req, res) => {
 app.use("/api/users", userRouter);
 
 // For all requests related to posts
-app.use("/api/posts", jwtAuth, postRouter);
+app.use("/api/posts", loggerMiddleware, jwtAuth, postRouter);
 
 // For all requests related to comments
-app.use("/api/comments", jwtAuth, commentRouter);
+app.use("/api/comments", loggerMiddleware, jwtAuth, commentRouter);
 
 // For all requests related to likes
-app.use("/api/likes", jwtAuth, likeRouter);
-
-// Use the error handler middleware
-app.use(errorHandler);
+app.use("/api/likes", loggerMiddleware, jwtAuth, likeRouter);
 
 // Middleware to handle 404 requests
 app.use((req, res) => {
   res.status(404).send("API not found. Please check our documentation for more information at localhost:4000/api-docs.");
 });
+
+// Use the error handler middleware
+app.use(errorHandler);
 
 // Specify the port and start the server
 app.listen(4000, () => {

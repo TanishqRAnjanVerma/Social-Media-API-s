@@ -2,7 +2,6 @@
 
 // Import express
 import express from "express";
-import jwtAuth from "../middlewares/jwt.middleware.js";
 import CommentController from "../controller/commentController.js";
 
 // Initialize an Express Router
@@ -12,10 +11,11 @@ const commentRouter = express.Router();
 const commentController = new CommentController();
 
 // All paths to commentController method
-commentRouter.get("/", jwtAuth, commentController.getAllComments);
-commentRouter.post("/", jwtAuth, commentController.addComment);
-commentRouter.put("/:id", jwtAuth, commentController.updateComment);
-commentRouter.delete("/:id", jwtAuth, commentController.deleteComment);
+commentRouter.get("/post/:postId", commentController.getCommentsForPost);
+commentRouter.post("/post/:postId", commentController.addComment);
 
-// Export postRouter
+commentRouter.put("/:commentId", commentController.updateComment);
+commentRouter.delete("/:commentId", commentController.deleteComment);
+
+// Export commentRouter
 export default commentRouter;

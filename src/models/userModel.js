@@ -1,5 +1,21 @@
 import bcrypt from "bcryptjs";
 
+const users = [
+  {
+    id: 1,
+    name: "John Doe",
+    email: "johndoe@gmail.com",
+    password: "$2a$12$2Uf.o2.j5zJ.E/p.5.C1A.eS3g5.z.C1A.eS3g5.z.C1A.eS3g5.z",
+  },
+  {
+    id: 2,
+    name: "Jane Smith",
+    email: "janesmith@gmail.com",
+    password: "$2a$12$9yG.eS3g5.z.C1A.eS3g5.z.C1A.eS3g5.z.C1A.eS3g5.z.C1A",
+  },
+];
+let userIdCounter = users.length;
+
 export default class UserModel {
   constructor(id, name, email, password) {
     this.id = id;
@@ -12,12 +28,7 @@ export default class UserModel {
   static async SignUp(name, email, password) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 12);
-    const newUser = new UserModel(
-      users.length + 1,
-      name,
-      email,
-      hashedPassword
-    );
+    const newUser = new UserModel(++userIdCounter, name, email, hashedPassword);
     users.push(newUser);
     // Return user without the password
     return { id: newUser.id, name: newUser.name, email: newUser.email };
@@ -26,7 +37,7 @@ export default class UserModel {
   // Sign in
 
   static async SignIn(email, password) {
-    const user = users.find((user) => user.email == email);
+    const user = users.find((user) => user.email === email);
     if (!user) {
       return null;
     }
@@ -51,21 +62,6 @@ export default class UserModel {
 
   // Find user by ID
   static findById(id) {
-    return users.find((user) => user.id == id);
+    return users.find((user) => user.id === Number(id));
   }
 }
-
-const users = [
-  {
-    id: 1,
-    name: "John Doe",
-    email: "johndoe@gmail.com",
-    password: "$2a$12$2Uf.o2.j5zJ.E/p.5.C1A.eS3g5.z.C1A.eS3g5.z.C1A.eS3g5.z",
-  },
-  {
-    id: 2,
-    name: "Jane Smith",
-    email: "janesmith@gmail.com",
-    password: "$2a$12$9yG.eS3g5.z.C1A.eS3g5.z.C1A.eS3g5.z.C1A.eS3g5.z.C1A",
-  },
-];

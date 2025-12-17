@@ -1,64 +1,44 @@
 # Social Media API
 
-This is a robust RESTful API for a social media application built with Node.js and Express. It includes features for user authentication, post management, comments, likes, file uploads, and comprehensive API documentation with Swagger.
+This is a RESTful API for a simple social media application. It provides endpoints for user authentication, creating and managing posts, commenting on posts, and liking posts.
+
+The API is built with Node.js and Express, and it uses JWT for authentication.
 
 ## Features
 
-- **User Authentication**: Secure sign-up and sign-in using JWT (JSON Web Tokens).
+- **User Management**: User registration and sign-in.
+- **Authentication**: Secure endpoints using JSON Web Tokens (JWT).
 - **Post Management**: Full CRUD (Create, Read, Update, Delete) functionality for posts.
-- **Advanced Post Retrieval**:
-  - Filter posts by caption.
-  - Sort posts by creation date.
-  - Paginate results for efficient loading.
-- **Engagement**:
-  - Add and manage comments on posts.
-  - Like and unlike posts.
-- **Media Uploads**: Upload images for posts using `multer`.
-- **Security**: Endpoints are secured using custom JWT authentication middleware.
-- **Error Handling**: Centralized, custom error handling for consistent API responses.
-- **Logging**: Detailed request logging using `winston`.
-- **API Documentation**: Interactive API documentation powered by Swagger.
-
----
-
-## API Documentation
-
-Once the server is running, you can explore and interact with the API using the Swagger documentation available at:
-
-**http://localhost:4000/api-docs**
-
----
+- **Image Uploads**: Support for uploading images with posts.
+- **Social Interactions**: Liking posts and adding comments.
+- **API Documentation**: Interactive API documentation powered by Swagger/OpenAPI.
 
 ## Getting Started
 
-Follow these instructions to get a copy of the project up and running on your local machine.
+Follow these instructions to get a copy of the project up and running on your local machine for development and testing.
 
 ### Prerequisites
 
-- Node.js (v18.x or later recommended)
-- npm (usually comes with Node.js)
+Make sure you have the following installed on your machine:
+
+- [Node.js](https://nodejs.org/en/) (v16 or newer)
+- [npm](https://www.npmjs.com/) (included with Node.js)
 
 ### Installation
 
-1.  Clone the repository or download the source code.
-2.  Navigate to the project's root directory in your terminal.
-3.  Install the required npm packages:
+1.  Clone the repository to your local machine.
+2.  Navigate into the project directory:
+    ```bash
+    cd Social-Media
+    ```
+3.  Install the required dependencies:
     ```bash
     npm install
     ```
 
-### Configuration
-
-1.  Create a `.env` file in the root directory of the project.
-2.  Add the following environment variable. This is used to sign the JWTs.
-
-    ```env
-    JWT_SECRET="your_super_secret_jwt_key"
-    ```
-
 ### Running the Application
 
-To start the Express server, run the following command:
+To start the server, run the following command:
 
 ```bash
 npm start
@@ -66,54 +46,141 @@ npm start
 
 The server will start on `http://localhost:4000`.
 
+## API Documentation
+
+This API is documented using the OpenAPI 3.0 specification. Once the server is running, you can access the interactive Swagger UI documentation in your browser at:
+
+**http://localhost:4000/api-docs**
+
+This interface allows you to explore and test all the API endpoints directly.
+
+## API Endpoints
+
+All endpoints are prefixed with `/api`. Authentication is required for most endpoints and is handled via a JWT Bearer token in the `Authorization` header.
+
+### User Endpoints
+
+- **`POST /users/sign-up`**
+
+  - **Description**: Registers a new user.
+  - **Request Body**: `application/json` with `name`, `email`, and `password`.
+  - **Response**: `201 Created` on success.
+
+- **`POST /users/sign-in`**
+  - **Description**: Logs in an existing user.
+  - **Request Body**: `application/json` with `email` and `password`.
+  - **Response**: `200 OK` with user details and a JWT `token`.
+
+### Post Endpoints
+
+- **`GET /posts`**
+
+  - **Description**: Retrieves all posts. Supports filtering by `caption`, pagination (`page`, `limit`), and sorting (`sortBy=date|engagement`, `order=asc|desc`).
+  - **Auth**: Required.
+  - **Response**: `200 OK` with an array of posts.
+
+- **`POST /posts`**
+
+  - **Description**: Creates a new post. The route for this is `POST /api/posts`.
+  - **Auth**: Required.
+  - **Request Body**: `multipart/form-data` with `caption` (text) and `image` (file).
+  - **Response**: `201 Created` with the newly created post.
+
+- **`GET /posts/{id}`**
+
+  - **Description**: Retrieves a single post by its ID.
+  - **Auth**: Required.
+  - **Response**: `200 OK` with the post details.
+
+- **`PUT /posts/{id}`**
+
+  - **Description**: Updates an existing post. Only the post's author can update it.
+  - **Auth**: Required.
+  - **Request Body**: `multipart/form-data` with optional `caption` (text) and `image` (file).
+  - **Response**: `200 OK` with the updated post.
+
+- **`DELETE /posts/{id}`**
+
+  - **Description**: Deletes a post. Only the post's author can delete it.
+  - **Auth**: Required.
+  - **Response**: `200 OK` with a success message.
+
+- **`GET /posts/user/{userId}`**
+
+  - **Description**: Retrieves all posts created by a specific user. The route for this is `GET /api/posts/user/{userId}`.
+  - **Auth**: Required.
+  - **Response**: `200 OK` with an array of posts.
+
+- **`PUT /posts/status/{id}`**
+
+  - **Description**: Updates the status of a post (e.g., to 'draft', 'archived', or 'published'). Only the author can update the status.
+  - **Auth**: Required.
+  - **Request Body**: `application/json` with `status`.
+  - **Response**: `200 OK` with the updated post.
+
+- **`GET /posts/bookmark/{id}`**
+  - **Description**: Toggles a bookmark on a post for the current user.
+  - **Auth**: Required.
+  - **Response**: `200 OK` with a success message ("Post bookmarked" or "Post unbookmarked").
+
+### Comment Endpoints
+
+- **`GET /comments/{postId}`**
+
+  - **Description**: Retrieves all comments for a specific post.
+  - **Auth**: Required.
+  - **Response**: `200 OK` with an array of comments.
+
+- **`POST /comments/{postId}`**
+
+  - **Description**: Adds a new comment to a specific post.
+  - **Auth**: Required.
+  - **Request Body**: `application/json` with `content`.
+  - **Response**: `201 Created` with the new comment.
+
+- **`PUT /comments/{id}`**
+
+  - **Description**: Updates a comment. Only the comment's author can update it.
+  - **Auth**: Required.
+  - **Request Body**: `application/json` with `content`.
+  - **Response**: `200 OK` with the updated comment.
+
+- **`DELETE /comments/{id}`**
+
+  - **Description**: Deletes a comment. Only the comment's author can delete it.
+  - **Auth**: Required.
+  - **Response**: `200 OK` with a success message.
+
+### Like Endpoints
+
+- **`GET /likes/toggle/{postId}`**
+
+  - **Description**: Toggles a like on a post. If the user has already liked the post, it unlikes it. Otherwise, it adds a like.
+  - **Auth**: Required.
+  - **Response**: `200 OK` with a success message ("Post liked" or "Post unliked").
+
+- **`GET /likes/{postId}`**
+  - **Description**: Retrieves all likes for a specific post.
+  - **Auth**: Required.
+  - **Response**: `200 OK` with the total like count and an array of like details.
+
+## Project Structure
+
+```
+src/
+├── config/         # Environment configuration
+├── controller/     # Express route handlers (controllers)
+├── middleware/     # Custom Express middleware (e.g., auth, file upload)
+├── models/         # Data models and business logic
+├── routes/         # API route definitions
+├── utils/          # Utility functions and classes
+└── server.js       # Main application entry point
+```
+
+## Testing
+
+API testing can be performed using the Swagger UI or by importing the `swagger.json` file into a tool like Postman.
+
+To test authenticated endpoints, first, use the `/api/users/sign-in` endpoint to get a JWT. Then, add it as a Bearer Token to the `Authorization` header for your subsequent requests.
+
 ---
-
-## API Endpoints Overview
-
-All endpoints are prefixed with `/api`.
-
-### User Routes (`/users`)
-
-- `POST /sign-up`: Register a new user.
-- `POST /sign-in`: Log in a user and receive a JWT.
-- `GET /`: Get a list of all users.
-
-### Post Routes (`/posts`)
-
-_(Requires JWT Authentication)_
-
-- `POST /`: Create a new post (multipart/form-data for image upload).
-- `GET /`: Get all posts with optional filtering, sorting, and pagination.
-- `GET /:id`: Get a specific post by its ID.
-- `PUT /:id`: Update a post's caption or image.
-- `DELETE /:id`: Delete a post.
-- `GET /user/:userId`: Get all posts by a specific user.
-
-### Comment Routes (`/comments`)
-
-_(Requires JWT Authentication)_
-
-- `POST /:postId`: Add a comment to a post.
-- `GET /:postId`: Get all comments for a specific post.
-
-### Like Routes (`/likes`)
-
-_(Requires JWT Authentication)_
-
-- `POST /`: Add a like to a post.
-- `GET /`: Get all likes.
-- `GET /post/:postId`: Get all likes for a specific post.
-- `DELETE /:id`: Remove a like.
-
----
-
-## Technologies Used
-
-- **Backend**: Node.js, Express.js
-- **Authentication**: JSON Web Tokens (JWT), bcryptjs
-- **Database**: In-memory arrays (for demonstration purposes)
-- **File Uploads**: Multer
-- **API Documentation**: Swagger UI Express
-- **Logging**: Winston
-- **Environment Variables**: Dotenv
-- **CORS**: cors

@@ -6,9 +6,6 @@ export default class UserControlller {
   // Sign up
   async signUp(req, res) {
     const { name, email, password } = req.body;
-    if (!name || !email || !password) {
-      return res.status(400).send("Name, email, and password are required.");
-    }
 
     // Check if user already exists
     if (UserModel.findByEmail(email)) {
