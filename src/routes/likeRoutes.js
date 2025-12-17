@@ -12,10 +12,11 @@ const likeRouter = express.Router();
 const likeController = new LikeController();
 
 // All paths to likeController method
-likeRouter.get("/", jwtAuth, likeController.getAllLikes);
-likeRouter.post("/", jwtAuth, likeController.addLike);
-likeRouter.delete("/:id", jwtAuth, likeController.removeLike);
-likeRouter.get("/post/:postId", jwtAuth, likeController.getLikesByPostId);
-likeRouter.post("/has-liked", jwtAuth, likeController.hasUserLiked);
+// Toggle like (add/remove)
+likeRouter.get("/toggle/:postId", jwtAuth, likeController.toggleLike);
+
+// Get all likes for a specific post
+likeRouter.get("/:postId", jwtAuth, likeController.getLikes);
+
 // Export likeRouter
 export default likeRouter;

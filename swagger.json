@@ -2,7 +2,7 @@
   "openapi": "3.0.0",
   "info": {
     "title": "Social Media API",
-    "description": "A RESTful API for a social media application, including user authentication, posts, comments, and likes.",
+    "description": "A RESTful API for a social media application including users, posts, comments, and likes.",
     "version": "1.0.0"
   },
   "servers": [
@@ -16,21 +16,16 @@
       "bearerAuth": {
         "type": "http",
         "scheme": "bearer",
-        "bearerFormat": "JWT",
-        "description": "Enter your JWT token in the format: Bearer {token}. You can get a token from the /api/users/sign-in endpoint."
+        "bearerFormat": "JWT"
       }
     },
     "schemas": {
       "User": {
         "type": "object",
         "properties": {
-          "id": { "type": "integer", "example": 1 },
-          "name": { "type": "string", "example": "John Doe" },
-          "email": {
-            "type": "string",
-            "format": "email",
-            "example": "johndoe@example.com"
-          }
+          "id": { "type": "integer" },
+          "name": { "type": "string" },
+          "email": { "type": "string", "format": "email" }
         }
       },
       "NewUser": {
@@ -63,8 +58,7 @@
           "id": { "type": "integer" },
           "userId": { "type": "integer" },
           "caption": { "type": "string" },
-          "imageUrl": { "type": "string", "format": "uri" },
-          "createdAt": { "type": "string", "format": "date-time" }
+          "imageUrl": { "type": "string" }
         }
       },
       "Comment": {
@@ -81,8 +75,7 @@
         "properties": {
           "id": { "type": "integer" },
           "userId": { "type": "integer" },
-          "postId": { "type": "integer" },
-          "createdAt": { "type": "string", "format": "date-time" }
+          "postId": { "type": "integer" }
         }
       },
       "Error": {
@@ -107,22 +100,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": "User created successfully",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/User" }
-              }
-            }
-          },
-          "409": { "description": "Email is already in use" }
+          "201": { "description": "User registered successfully" },
+          "409": { "description": "Email already exists" }
         }
       }
     },
     "/api/users/sign-in": {
       "post": {
         "tags": ["User"],
-        "summary": "Log in a user",
+        "summary": "Login user",
         "requestBody": {
           "required": true,
           "content": {
@@ -133,64 +119,24 @@
         },
         "responses": {
           "200": {
-            "description": "Successful login",
+            "description": "Login successful",
             "content": {
               "application/json": {
                 "schema": { "$ref": "#/components/schemas/LoginResponse" }
               }
             }
           },
-          "401": { "description": "Invalid Credentials" }
-        }
-      }
-    },
-    "/api/users": {
-      "get": {
-        "tags": ["User"],
-        "summary": "Get all registered users",
-        "description": "Note: This is an open endpoint in the current configuration.",
-        "responses": {
-          "200": {
-            "description": "A list of users",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "$ref": "#/components/schemas/User"
-                  }
-                }
-              }
-            }
-          }
+          "401": { "description": "Invalid credentials" }
         }
       }
     },
     "/api/posts": {
       "get": {
         "tags": ["Post"],
-        "summary": "Get all posts with filtering, sorting, and pagination",
+        "summary": "Get all posts",
         "security": [{ "bearerAuth": [] }],
-        "parameters": [
-          {
-            "name": "caption",
-            "in": "query",
-            "schema": { "type": "string" },
-            "description": "Filter posts by caption content"
-          }
-        ],
         "responses": {
-          "200": {
-            "description": "A list of posts",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": { "$ref": "#/components/schemas/Post" }
-                }
-              }
-            }
-          },
+          "200": { "description": "Posts fetched successfully" },
           "401": { "description": "Unauthorized" }
         }
       },
@@ -213,133 +159,15 @@
           }
         },
         "responses": {
-          "201": {
-            "description": "Post created successfully",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Post" }
-              }
-            }
-          },
-          "400": { "description": "Caption and image are required" },
+          "201": { "description": "Post created" },
           "401": { "description": "Unauthorized" }
-        }
-      }
-    },
-    "/api/posts/{id}": {
-      "get": {
-        "tags": ["Post"],
-        "summary": "Get a specific post by its ID",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Post details",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Post" }
-              }
-            }
-          },
-          "404": { "description": "Post not found" }
-        }
-      },
-      "put": {
-        "tags": ["Post"],
-        "summary": "Update a post",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer" }
-          }
-        ],
-        "requestBody": {
-          "content": {
-            "multipart/form-data": {
-              "schema": {
-                "type": "object",
-                "properties": {
-                  "caption": { "type": "string" },
-                  "image": { "type": "string", "format": "binary" }
-                }
-              }
-            }
-          }
-        },
-        "responses": {
-          "200": {
-            "description": "Post updated successfully",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/Post" }
-              }
-            }
-          },
-          "401": { "description": "Unauthorized" },
-          "404": { "description": "Post not found" }
-        }
-      },
-      "delete": {
-        "tags": ["Post"],
-        "summary": "Delete a post",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer" }
-          }
-        ],
-        "responses": {
-          "200": { "description": "Post deleted successfully" },
-          "401": { "description": "Unauthorized" },
-          "404": { "description": "Post not found" }
-        }
-      }
-    },
-    "/api/posts/user/{userId}": {
-      "get": {
-        "tags": ["Post"],
-        "summary": "Get all posts by a specific user ID",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A list of posts from the user",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": { "$ref": "#/components/schemas/Post" }
-                }
-              }
-            }
-          }
         }
       }
     },
     "/api/comments/{postId}": {
       "get": {
         "tags": ["Comment"],
-        "summary": "Get all comments for a specific post",
+        "summary": "Get comments for a post",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
@@ -350,23 +178,12 @@
           }
         ],
         "responses": {
-          "200": {
-            "description": "List of comments",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": { "$ref": "#/components/schemas/Comment" }
-                }
-              }
-            }
-          },
-          "401": { "description": "Unauthorized" }
+          "200": { "description": "Comments fetched" }
         }
       },
       "post": {
         "tags": ["Comment"],
-        "summary": "Add a comment to a post",
+        "summary": "Add comment to post",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
@@ -376,88 +193,6 @@
             "schema": { "type": "integer" }
           }
         ],
-        "requestBody": {
-          "required": true,
-          "content": {
-            "application/json": {
-              "schema": {
-                "type": "object",
-                "properties": { "content": { "type": "string" } }
-              }
-            }
-          }
-        },
-        "responses": {
-          "201": { "description": "Comment added" },
-          "401": { "description": "Unauthorized" },
-          "404": { "description": "Post not found" }
-        }
-      }
-    },
-    "/api/likes/toggle/{id}": {
-      "get": {
-        "tags": ["Like"],
-        "summary": "Toggle a like on a post or comment",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "description": "The ID of the post or comment to like/unlike",
-            "schema": { "type": "integer" }
-          },
-          {
-            "name": "type",
-            "in": "query",
-            "required": true,
-            "description": "The type of item to like",
-            "schema": { "type": "string", "enum": ["Post", "Comment"] }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Like toggled successfully (added or removed)"
-          },
-          "401": { "description": "Unauthorized" },
-          "404": { "description": "Post or Comment not found" }
-        }
-      }
-    },
-    "/api/likes/post/{postId}": {
-      "get": {
-        "tags": ["Like"],
-        "summary": "Get all likes for a specific post",
-        "security": [{ "bearerAuth": [] }],
-        "parameters": [
-          {
-            "name": "postId",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "A list of likes for the post",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": { "$ref": "#/components/schemas/Like" }
-                }
-              }
-            }
-          },
-          "401": { "description": "Unauthorized" }
-        }
-      }
-    },
-    "/api/likes": {
-      "post": {
-        "tags": ["Like"],
-        "summary": "Add a like to a post",
-        "security": [{ "bearerAuth": [] }],
         "requestBody": {
           "required": true,
           "content": {
@@ -465,55 +200,83 @@
               "schema": {
                 "type": "object",
                 "properties": {
-                  "userId": { "type": "integer" },
-                  "postId": { "type": "integer" }
+                  "content": { "type": "string" }
                 }
               }
             }
           }
         },
         "responses": {
-          "201": { "description": "Like added successfully" },
-          "400": { "description": "userId and postId are required" },
-          "409": { "description": "Post already liked" }
-        }
-      },
-      "get": {
-        "tags": ["Like"],
-        "summary": "Get all likes",
-        "security": [{ "bearerAuth": [] }],
-        "responses": {
-          "200": {
-            "description": "A list of all likes in the system",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": { "$ref": "#/components/schemas/Like" }
-                }
-              }
-            }
-          }
+          "201": { "description": "Comment added" }
         }
       }
     },
-    "/api/likes/{id}": {
-      "delete": {
+    "/api/likes/toggle/{postId}": {
+      "get": {
         "tags": ["Like"],
-        "summary": "Remove a like by its ID",
+        "summary": "Toggle like on a post",
+        "description": "Adds a like if not liked, removes it if already liked.",
         "security": [{ "bearerAuth": [] }],
         "parameters": [
           {
-            "name": "id",
+            "name": "postId",
             "in": "path",
             "required": true,
             "schema": { "type": "integer" }
           }
         ],
         "responses": {
-          "200": { "description": "Like removed successfully" },
-          "401": { "description": "Unauthorized" },
-          "404": { "description": "Like not found" }
+          "200": {
+            "description": "Like toggled",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "message": {
+                      "type": "string",
+                      "example": "Post liked"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": { "description": "Unauthorized" }
+        }
+      }
+    },
+    "/api/likes/{postId}": {
+      "get": {
+        "tags": ["Like"],
+        "summary": "Get all likes for a post",
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          {
+            "name": "postId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Likes fetched",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "totalLikes": { "type": "integer" },
+                    "likes": {
+                      "type": "array",
+                      "items": { "$ref": "#/components/schemas/Like" }
+                    }
+                  }
+                }
+              }
+            }
+          }
         }
       }
     }

@@ -1,25 +1,25 @@
-import jwt from "jsonwebtoken";
-
 const jwtAuth = (req, res, next) => {
   // Read the token
-  const token = req.headers["authorization"];
+  const authHeader = req.headers.authorization;
 
-  // If no token, send error
-  if (!token) {
-    return res.status(401).send("Access Denied. Unauthorized.");
+  // Check if token exists and is in Bearer format
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res
+      .status(401)
+      .json({ message: "Authorization token missing or malformed" });
   }
 
-  // Check if token is valid or not
+  const token = authHeader.split(" ")[1];
+
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET);
     req.userId = payload.userId;
-  } catch (err) {
+    // Call next middleware
+    next();
+  } catch (error) {
     // Return Error
-    return res.status(401).send("Access Denied. Unauthorized.");
+    return res.status(401).json({ message: "Invalid or expired token" });
   }
-
-  // Call next middleware
-  next();
 };
 
 export default jwtAuth;

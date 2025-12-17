@@ -7,18 +7,21 @@ const logger = winston.createLogger({
     winston.format.json()
   ),
   defaultMeta: { service: "social-media-api" },
-  transports: [new winston.transports.File({ filename: "log.txt" })],
+  transports: [new winston.transports.File({ filename: "app.log" })],
 });
 
-export const loggerMiddleware = async (req, res, next) => {
-  // Log all requests except for user sign-in and sign-up
+export const loggerMiddleware = (req, res, next) => {
+  // Exclude user authentication routes
   if (!req.originalUrl.startsWith("/api/users")) {
-    const logData = `Method: ${req.method}, URL: ${
-      req.originalUrl
-    }, Body: ${JSON.stringify(req.body)}`;
-    logger.info(logData, { timestamp: new Date().toISOString() });
+    const logData = {
+      method: req.method,
+      url: req.originalUrl,
+      body: Object.keys(req.body || {}).length > 0 ? req.body : "N/A",
+    };
+
+    logger.info(logData);
   }
-  return next();
+  next();
 };
 
 export default loggerMiddleware;

@@ -44,3 +44,9 @@
 {"level":"info","message":"Method: GET, URL: /api-docs/swagger-ui-standalone-preset.js, Body: {}","service":"social-media-api","timestamp":"2025-12-17T15:51:15.518Z"}
 {"level":"info","message":"Method: GET, URL: /api-docs/swagger-ui-init.js, Body: {}","service":"social-media-api","timestamp":"2025-12-17T15:51:15.527Z"}
 {"level":"info","message":"Method: GET, URL: /api-docs/favicon-32x32.png, Body: {}","service":"social-media-api","timestamp":"2025-12-17T15:51:16.160Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api-docs/"},"service":"social-media-api","timestamp":"2025-12-17T17:14:57.815Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api-docs/swagger-ui.css"},"service":"social-media-api","timestamp":"2025-12-17T17:14:57.860Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api-docs/swagger-ui-bundle.js"},"service":"social-media-api","timestamp":"2025-12-17T17:14:57.864Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api-docs/swagger-ui-standalone-preset.js"},"service":"social-media-api","timestamp":"2025-12-17T17:14:57.871Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api-docs/swagger-ui-init.js"},"service":"social-media-api","timestamp":"2025-12-17T17:14:57.896Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api-docs/favicon-32x32.png"},"service":"social-media-api","timestamp":"2025-12-17T17:14:58.278Z"}
