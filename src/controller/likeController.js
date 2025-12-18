@@ -6,7 +6,7 @@ export default class LikeController {
   toggleLike(req, res, next) {
     try {
       const userId = req.userId;
-      const postId = Number(req.params.postId); // postId from params
+      const postId = Number(req.params.postId); 
 
       if (!postId || isNaN(postId)) {
         throw new CustomError("A valid postId is required", 400);

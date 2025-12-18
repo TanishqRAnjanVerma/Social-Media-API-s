@@ -42,7 +42,6 @@ export default class UserControlller {
   // Get all users
   getAllUsers(req, res) {
     let allUsers = UserModel.getAllUsers();
-    // It's a good practice to not expose passwords, even hashed ones.
     allUsers = allUsers.map(({ password, ...rest }) => rest);
     res.status(200).send(allUsers);
   }

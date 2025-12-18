@@ -15,7 +15,6 @@ export default class CommentController {
       );
       res.status(201).send(newComment);
     } catch (error) {
-      // This will now be handled by your central errorHandler
       next(error);
     }
   }

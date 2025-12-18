@@ -1,0 +1,39 @@
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api/posts?caption=first&page=1854&sortBy=engagement&order=desc"},"service":"social-media-api","timestamp":"2025-12-18T13:22:39.758Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api/posts?caption=first&page=1854&sortBy=engagement&order=desc"},"service":"social-media-api","timestamp":"2025-12-18T13:23:09.959Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api/posts?caption=first&page=1854&sortBy=engagement&order=desc"},"service":"social-media-api","timestamp":"2025-12-18T13:24:00.235Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api/posts?caption=first&page=1&sortBy=date&order=asc"},"service":"social-media-api","timestamp":"2025-12-18T13:25:32.041Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api/posts?caption=first&page=1854&sortBy=engagement&order=desc"},"service":"social-media-api","timestamp":"2025-12-18T13:25:50.786Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api/posts?caption=first&page=1854&sortBy=engagement&order=desc"},"service":"social-media-api","timestamp":"2025-12-18T13:26:07.804Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api/posts?caption=first&page=1854&sortBy=engagement&order=desc"},"service":"social-media-api","timestamp":"2025-12-18T13:26:22.163Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api/posts?caption=First&page=1854&sortBy=engagement&order=desc"},"service":"social-media-api","timestamp":"2025-12-18T13:27:01.399Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api/posts?caption=First&page=&sortBy=engagement&order=desc"},"service":"social-media-api","timestamp":"2025-12-18T13:27:19.838Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api/posts?caption=First&page=1&sortBy=date&order=asc"},"service":"social-media-api","timestamp":"2025-12-18T13:27:38.553Z"}
+{"level":"info","message":{"body":"N/A","method":"POST","url":"/api/posts"},"service":"social-media-api","timestamp":"2025-12-18T13:35:27.060Z"}
+{"level":"info","message":{"body":"N/A","method":"POST","url":"/api/posts"},"service":"social-media-api","timestamp":"2025-12-18T13:36:23.878Z"}
+{"level":"info","message":{"body":"N/A","method":"POST","url":"/api/posts"},"service":"social-media-api","timestamp":"2025-12-18T13:36:37.193Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api/posts?caption=Another&page=1&sortBy=date&order=asc"},"service":"social-media-api","timestamp":"2025-12-18T13:37:00.363Z"}
+{"level":"info","message":{"body":"N/A","method":"POST","url":"/api/posts"},"service":"social-media-api","timestamp":"2025-12-18T13:38:09.610Z"}
+{"level":"info","message":{"body":"N/A","method":"POST","url":"/api/posts"},"service":"social-media-api","timestamp":"2025-12-18T13:38:50.950Z"}
+{"level":"info","message":{"body":"N/A","method":"POST","url":"/api/posts?"},"service":"social-media-api","timestamp":"2025-12-18T13:41:52.047Z"}
+{"level":"info","message":{"body":"N/A","method":"POST","url":"/api/posts?"},"service":"social-media-api","timestamp":"2025-12-18T13:42:14.355Z"}
+{"level":"info","message":{"body":"N/A","method":"POST","url":"/api/posts?"},"service":"social-media-api","timestamp":"2025-12-18T13:42:18.665Z"}
+{"level":"info","message":{"body":"N/A","method":"POST","url":"/api/posts?"},"service":"social-media-api","timestamp":"2025-12-18T13:43:36.841Z"}
+{"level":"info","message":{"body":"N/A","method":"POST","url":"/api/posts"},"service":"social-media-api","timestamp":"2025-12-18T13:44:11.574Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api/posts?caption=Another&page=1&sortBy=date&order=asc"},"service":"social-media-api","timestamp":"2025-12-18T13:57:47.424Z"}
+{"level":"info","message":{"body":"N/A","method":"POST","url":"/api/posts"},"service":"social-media-api","timestamp":"2025-12-18T13:59:03.107Z"}
+{"level":"info","message":{"body":{"status":"published"},"method":"PUT","url":"/api/posts/status/1854"},"service":"social-media-api","timestamp":"2025-12-18T13:59:56.678Z"}
+{"level":"info","message":{"body":{"status":"published"},"method":"PUT","url":"/api/posts/status/3"},"service":"social-media-api","timestamp":"2025-12-18T14:00:14.646Z"}
+{"level":"info","message":{"body":{"status":"draft"},"method":"PUT","url":"/api/posts/status/3"},"service":"social-media-api","timestamp":"2025-12-18T14:00:27.354Z"}
+{"level":"info","message":{"body":"N/A","method":"PUT","url":"/api/posts/3"},"service":"social-media-api","timestamp":"2025-12-18T14:01:23.855Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api/comments/post/1"},"service":"social-media-api","timestamp":"2025-12-18T14:03:28.901Z"}
+{"level":"info","message":{"body":{"content":"This is brand new coment"},"method":"POST","url":"/api/comments/post/1"},"service":"social-media-api","timestamp":"2025-12-18T14:04:21.854Z"}
+{"level":"info","message":{"body":{"content":"Updated comment text"},"method":"PUT","url":"/api/comments/1"},"service":"social-media-api","timestamp":"2025-12-18T14:06:03.019Z"}
+{"level":"info","message":{"body":{"content":"Updated comment text"},"method":"PUT","url":"/api/comments/1"},"service":"social-media-api","timestamp":"2025-12-18T14:06:34.137Z"}
+{"level":"info","message":{"body":{"content":"Updated comment text"},"method":"PUT","url":"/api/comments/3"},"service":"social-media-api","timestamp":"2025-12-18T14:06:46.265Z"}
+{"level":"info","message":{"body":{"content":"Updated comment text"},"method":"PUT","url":"/api/comments/4"},"service":"social-media-api","timestamp":"2025-12-18T14:06:53.283Z"}
+{"level":"info","message":{"body":"N/A","method":"DELETE","url":"/api/comments/4"},"service":"social-media-api","timestamp":"2025-12-18T14:07:17.696Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api/likes/toggle/1"},"service":"social-media-api","timestamp":"2025-12-18T14:07:50.068Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api/likes/toggle/1"},"service":"social-media-api","timestamp":"2025-12-18T14:07:53.206Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api/likes/1"},"service":"social-media-api","timestamp":"2025-12-18T14:08:48.348Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api/likes/toggle/1"},"service":"social-media-api","timestamp":"2025-12-18T14:08:56.737Z"}
+{"level":"info","message":{"body":"N/A","method":"GET","url":"/api/likes/1"},"service":"social-media-api","timestamp":"2025-12-18T14:09:01.984Z"}

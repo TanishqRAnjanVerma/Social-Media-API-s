@@ -13,7 +13,6 @@ const commentController = new CommentController();
 // All paths to commentController method
 commentRouter.get("/post/:postId", commentController.getCommentsForPost);
 commentRouter.post("/post/:postId", commentController.addComment);
-
 commentRouter.put("/:commentId", commentController.updateComment);
 commentRouter.delete("/:commentId", commentController.deleteComment);
 

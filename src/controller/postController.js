@@ -8,6 +8,10 @@ export default class PostController {
     const { caption, status } = req.body; // status is optional
 
     // Get the image path from multer's file object
+    if (!userId) {
+      return next(new CustomError("User not authenticated.", 401));
+    }
+
     const imageUrl = req.file ? req.file.path : null;
 
     if (!caption) {
